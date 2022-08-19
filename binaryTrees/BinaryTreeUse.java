@@ -427,6 +427,143 @@ public class BinaryTreeUse {
         return ans;
     }
 
+    public static boolean searchBST(BinaryTreeNode<Integer> root, int data){
+        if(root == null){
+            return false;
+        }
+        if(root.data == data){
+            return true;
+        }
+        if(data < root.data){
+            return searchBST(root.left, data);
+        }
+        return searchBST(root.right, data);
+
+    }
+
+    public static void printBetweenK1K2(BinaryTreeNode<Integer> root, int k1, int k2){
+        if (root == null) {
+            return;
+        }
+        if (k1 < root.data) {
+            printBetweenK1K2(root.left, k1, k2);
+        }
+        if (k1 <= root.data && k2 >= root.data) {
+            System.out.print(root.data + " ");
+        }
+        printBetweenK1K2(root.right, k1, k2);
+    }
+
+    public static void print(BinaryTreeNode<Integer> root, int k, String path){
+        if(root == null){
+            return;
+        }
+        if(root.data == k && root.left == null && root.right == null){
+            path += Integer.toString(root.data) + " ";
+            System.out.println(path +  " ");
+        }else{
+            path += Integer.toString(root.data) + " ";
+        }
+        k -= root.data;
+        if(k < 0){
+            return;
+        }
+        print(root.left, k, path);
+        print(root.right, k, path);
+    }
+    public static void rootToLeafPathsSumToK(BinaryTreeNode<Integer> root, int k) {
+        //Your code goes here
+        String path = "";
+        print(root, k, path);
+    }
+
+    public static int maximum(BinaryTreeNode<Integer> root){
+        if(root == null){
+            return Integer.MIN_VALUE;
+        }
+        int maxLeft = maximum(root.left);
+        int maxRight = maximum(root.right);
+        return Math.max(root.data, Math.max(maxLeft, maxRight));
+    }
+    public static int minimum(BinaryTreeNode<Integer> root){
+        if(root == null){
+            return Integer.MAX_VALUE;
+        }
+        int leftMin = minimum(root.left);
+        int rightMin = minimum(root.right);
+        return Math.min(root.data, Math.min(leftMin, rightMin));
+    }
+    public static boolean isBST(BinaryTreeNode<Integer> root){
+        if(root == null){
+            return true;
+        }
+        int leftMax = maximum(root.left);
+        if(leftMax >= root.data){
+            return false;
+        }
+        int rightMin = minimum(root.right);
+        if(rightMin < root.data){
+            return false;
+        }
+        boolean isLeftBST = isBST(root.left);
+        boolean isRightBST = isBST(root.right);
+        return isLeftBST && isRightBST;
+    }
+    public static IsBSTReturn isBST2(BinaryTreeNode<Integer> root){
+        if(root == null){
+            IsBSTReturn ans = new IsBSTReturn(Integer.MAX_VALUE, Integer.MIN_VALUE, true);
+            return ans;
+        }
+
+        IsBSTReturn leftAns = isBST2(root.left);
+        IsBSTReturn rightAns = isBST2(root.right);
+
+        int min = Math.min(root.data, Math.min(leftAns.min, rightAns.min));
+        int max = Math.max(root.data, Math.max(leftAns.max, rightAns.max));
+        boolean isBST = true;
+        if(leftAns.max >= root.data){
+            isBST =true;
+        }
+        if(rightAns.min < root.data){
+            isBST = false;
+        }
+        if(!leftAns.isBST){
+            isBST = false;
+        }
+        if(!rightAns.isBST){
+            isBST = false;
+        }
+        IsBSTReturn ans = new IsBSTReturn(min, max, isBST);
+        return ans;
+    }
+    public static boolean isBST3(BinaryTreeNode<Integer> root, int minRange, int maxRange){
+        if(root == null){
+            return true;
+        }
+        if(root.data < minRange || root.data > maxRange){
+            return false;
+        }
+        boolean isLeftWithinRange = isBST3(root.left, minRange, root.data-1);
+        boolean isRightWithinRange = isBST3(root.right, root.data, maxRange);
+        return isLeftWithinRange && isRightWithinRange;
+    }
+
+    public static BinaryTreeNode<Integer> SortedArrayToBST(int[] arr, int n){
+        return SortedArrayToBST(arr, 0, n-1);
+    }
+    public static BinaryTreeNode<Integer> SortedArrayToBST(int[] arr, int si, int ei){
+        if(si <= ei) {
+            int mid = si + (ei - si) / 2;
+            BinaryTreeNode<Integer> root = new BinaryTreeNode<>(arr[mid]);
+            BinaryTreeNode<Integer> leftChild = SortedArrayToBST(arr, si, mid - 1);
+            BinaryTreeNode<Integer> rightChild = SortedArrayToBST(arr, mid + 1, ei);
+            root.left = leftChild;
+            root.right = rightChild;
+            return root;
+        }
+        return null;
+    }
+
 
     public static void main(String args[]){
 //        BinaryTreeNode<Integer> root = new BinaryTreeNode<>(1);
@@ -464,20 +601,28 @@ public class BinaryTreeUse {
 //        System.out.println("diameter : " + diameter(root).diameter );
 
 
-        BinaryTreeNode<Integer> root = takeInputLevelWise();
+//        BinaryTreeNode<Integer> root = takeInputLevelWise();
 //        printTreeDetailed(root);
 
-        int in[] = {4, 2, 5, 1, 6, 3, 7};
-        int pre[] = {1, 2, 4, 5, 3};
+        int in[] = {1,2,3,4,5,6,7};
+        int pre[] = {4,2,1,3,6,5,7};
         int post[] = {4, 5, 2, 6, 7, 3, 1};
 
 //        BinaryTreeNode<Integer> root = buildTreeFromPreIn(pre,in);
 //        BinaryTreeNode<Integer> root = buildTree(in, post);
 //        printTreeDetailed(root);
 
-        Pair<Integer, Integer> ans = findMinMax(root);
-        System.out.println("min " + ans.minimum + "max " + ans.maximum);
+//        Pair<Integer, Integer> ans = findMinMax(root);
+//        System.out.println("min " + ans.minimum + "max " + ans.maximum);
 
+        BinaryTreeNode<Integer> root = buildTreeFromPreIn(pre,in);
+        System.out.println(searchBST(root, 9));
+//        System.out.println(isBST(root));
+        IsBSTReturn ans = isBST2(root);
+        System.out.println(ans.min + " " + ans.max +" " + ans.isBST);
+//        int[] arr = {1,2,3,4,5,6,7};
+//        BinaryTreeNode<Integer> root = SortedArrayToBST(arr, 7);
+//        printTreeDetailed(root);
 
     }
 }
