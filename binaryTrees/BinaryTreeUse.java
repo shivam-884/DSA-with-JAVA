@@ -694,22 +694,19 @@ public class BinaryTreeUse {
         if (root == null) {
             return 0;
         }
-        int rightSum = replaceWithLargerNodesSum(root.right, sum);
-        if(sum != 0){
-            root.data += sum;
-        }else {
-            root.data += rightSum;
-        }
-        int leftSum = replaceWithLargerNodesSum(root.left, root.data);
-        if(sum != 0){
-            return root.data - sum;
-        }
-        return root.data + leftSum;
+        int rootData=root.data;
+
+        int rightSum = replaceWithLargerNodesSum(root.right,sum);
+
+        root.data = root.data+rightSum+sum;
+
+        int leftSum = replaceWithLargerNodesSum(root.left,root.data);
+
+        return rootData+rightSum+leftSum;
 
     }
 
     public static void replaceWithLargerNodesSum(BinaryTreeNode<Integer> root) {
-
         replaceWithLargerNodesSum(root, 0);
     }
 
@@ -766,6 +763,56 @@ public class BinaryTreeUse {
         return null;
     }
 
+    public static ArrayList<LinkedListNode<Integer>> constructLinkedListForEachLevel(BinaryTreeNode<Integer> root){
+        if (root == null)
+            return null;
+        Queue<BinaryTreeNode<Integer>> q1 = new LinkedList<BinaryTreeNode<Integer>>();
+        Queue<BinaryTreeNode<Integer>> q2 = new LinkedList<BinaryTreeNode<Integer>>();
+        ArrayList<LinkedListNode<Integer>> arr = new ArrayList<>();
+
+        q1.add(root);
+        while (!q1.isEmpty()) {
+
+            BinaryTreeNode<Integer> front = q1.remove();
+            LinkedListNode<Integer> node = new LinkedListNode<>(front.data);
+            arr.add(node);
+
+            if (front.left != null)
+                q2.add(front.left);
+
+            if (front.right != null)
+                q2.add(front.right);
+
+            while(!q1.isEmpty()){
+                BinaryTreeNode<Integer> nextNode = q1.remove();
+
+                if (nextNode.left != null)
+                    q2.add(nextNode.left);
+
+                if (nextNode.right != null)
+                    q2.add(nextNode.right);
+
+                LinkedListNode<Integer> newNode = new LinkedListNode<>(nextNode.data);
+                node.next = newNode;
+                node = newNode;
+            }
+
+            if (q1.isEmpty()) {
+                q1 = q2;
+                q2 = new LinkedList<BinaryTreeNode<Integer>>();
+            }
+        }
+        return arr;
+    }
+
+    private static void print(LinkedListNode<Integer> temp) {
+        while(temp != null){
+            System.out.print(temp.data + " ") ;
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
     public static void main(String args[]) {
 //        BinaryTreeNode<Integer> root = new BinaryTreeNode<>(1);
 //        BinaryTreeNode<Integer> rootLeft = new BinaryTreeNode<>(2);
@@ -802,8 +849,8 @@ public class BinaryTreeUse {
 //        System.out.println("diameter : " + diameter(root).diameter );
 
 
-//        BinaryTreeNode<Integer> root = takeInputLevelWise();
-//        printTreeDetailed(root);
+        BinaryTreeNode<Integer> root = takeInputLevelWise();
+        printTreeDetailed(root);
 
         int in[] = {1,2,3,4,5,6,7};
         int pre[] = {4,2,1,3,6,5,7};
@@ -843,5 +890,15 @@ public class BinaryTreeUse {
 //                System.out.print(i);
 //            }
 //        }
+
+//        ArrayList<LinkedListNode<Integer>> output = constructLinkedListForEachLevel(root);
+//        if(output!=null)
+//        {
+//            for(LinkedListNode<Integer> head : output){
+//                print(head);
+//
+//            }
+//        }
+
     }
 }
