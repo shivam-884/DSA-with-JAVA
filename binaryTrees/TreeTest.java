@@ -110,6 +110,117 @@ public class TreeTest {
         }
         return ans + 1;
     }
+
+    public static int countLeafNodes(TreeNode<Integer> root){
+        if(root == null){
+            return 0;
+        }
+        if(root.children.isEmpty()){
+            return 1;
+        }
+        int ans = 0;
+        for(int i=0; i<root.children.size(); i++){
+            int leafNodeCount = countLeafNodes(root.children.get(i));
+            ans += leafNodeCount;
+        }
+        return ans;
+    }
+
+    public static void printPostOrder(TreeNode<Integer> root){
+        if(root == null){
+            return;
+        }
+        for(TreeNode<Integer> child : root.children){
+           printPostOrder(child);
+        }
+        System.out.print(root.data + " ");
+    }
+
+    public static boolean checkIfContainsX(TreeNode<Integer> root, int x){
+        if(root == null){
+            return false;
+        }
+        if(root.data == x){
+            return true;
+        }
+        boolean output = false;
+        for(int i=0; i<root.children.size(); i++){
+            boolean subOutput = checkIfContainsX (root.children.get(i), x);
+            if(subOutput){
+                output = true;
+            }
+        }
+        return output;
+    }
+
+    public static TreeNode<Integer> maxSumNode(TreeNode<Integer> root){
+       MaxSumNodeReturn ans = maxSumNodeHelper(root);
+       return ans.node;
+
+    }
+
+    private static int findSum(ArrayList<TreeNode<Integer>> arr){
+        int sum = 0;
+        for(int i=0; i<arr.size(); i++){
+            sum += arr.get(i).data;
+        }
+        return sum;
+    }
+    public static MaxSumNodeReturn maxSumNodeHelper(TreeNode<Integer> root){
+        if(root == null){
+            return new MaxSumNodeReturn(null, 0);
+        }
+        int sum = root.data + findSum(root.children);
+        MaxSumNodeReturn ans = new MaxSumNodeReturn(root, sum);
+        for(int i=0; i<root.children.size(); i++){
+            MaxSumNodeReturn childAns = maxSumNodeHelper(root.children.get(i));
+            if(childAns.sum >= sum){
+                ans.sum = childAns.sum;
+                ans.node = childAns.node;
+            }
+        }
+        return ans;
+    }
+
+    public static boolean checkIdentical(TreeNode<Integer> root1, TreeNode<Integer> root2){
+        if(root1 == null && root2 == null){
+            return true;
+        }
+        if(root1 != null && root2 == null){
+            return false;
+        }
+        if(root1 == null && root2 != null){
+            return false;
+        }
+        if(root1.children.size() != root2.children.size()){
+            return false;
+        }
+        boolean ans = true;
+        for(int i=0; i<root1.children.size(); i++){
+            if(ans) {
+                boolean childAns = checkIdentical(root1.children.get(i), root2.children.get(i));
+                ans = ans && childAns;
+            }else{
+                return ans;
+            }
+        }
+        return ans;
+    }
+
+    public static void replaceWithDepthValue(TreeNode<Integer> root){
+        replaceWithDepthValue(root, 0);
+    }
+
+    public static void replaceWithDepthValue(TreeNode<Integer> root, int depth){
+        if(root == null){
+            return;
+        }
+        root.data = depth;
+        for(TreeNode<Integer> child : root.children){
+            replaceWithDepthValue(child, depth+1);
+        }
+    }
+
     public static void printTreeBetter(TreeNode<Integer> root){
         if(root == null){
             return;
@@ -169,7 +280,16 @@ public class TreeTest {
         printLevelWise(root);
         System.out.println("Number of Nodes : " + numberOfNodes(root));
 //        System.out.println("Number of Nodes greater than X " + numNodeGreater(root, 10));
-        System.out.println(heightOfTree(root));
+//        System.out.println(heightOfTree(root));
+//        System.out.println(countLeafNodes(root));
+//        printPostOrder(root);
+//        System.out.println(checkIfContainsX(root, 300));
+//        TreeNode<Integer> ans = maxSumNode(root);
+//        System.out.println(ans.data);
+//        TreeNode<Integer> root1 = takeInputLevelWise();
+//        System.out.println(checkIdentical(root, root1));
+        replaceWithDepthValue(root);
+        printLevelWise(root);
     }
 
 }
