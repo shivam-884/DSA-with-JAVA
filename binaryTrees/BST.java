@@ -1,5 +1,7 @@
 package binaryTrees;
 
+import java.util.ArrayList;
+
 public class BST {
     private BinaryTreeNode<Integer> root;
     private int size;
@@ -141,7 +143,7 @@ public class BST {
         int min = Math.min(leftOutput.min, Math.min(root.data,rightOutput.min));
         int max = Math.max(leftOutput.max, Math.max(root.data,rightOutput.max));
         boolean isBst = false;
-        if(root.data > leftOutput.max && root.data <= rightOutput.min){
+        if(root.data > leftOutput.max && root.data < rightOutput.min && leftOutput.isBST && rightOutput.isBST){
             isBst = true;
         }
         int height = Math.max(leftOutput.height, rightOutput.height);
@@ -150,5 +152,33 @@ public class BST {
         }
         return new LargestBSTHeight(min, max, isBst, height);
     }
+
+    public static void printNodesSumToS(BinaryTreeNode<Integer> root, int s) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        inorderTree(root, arr);
+
+        int i = 0, j = arr.size()-1;
+        while (i<j){
+            if(arr.get(i) + arr.get(j) == s){
+                System.out.println(arr.get(i) + " " + arr.get(j));
+                i++;
+            }else if(arr.get(i) + arr.get(j) > s){
+                j--;
+            }else{
+                i++;
+            }
+
+        }
+    }
+
+    private static void inorderTree(BinaryTreeNode<Integer> root, ArrayList<Integer> arr){
+        if(root == null){
+            return;
+        }
+        inorderTree(root.left, arr);
+        arr.add(root.data);
+        inorderTree(root.right, arr);
+    }
+
 
 }

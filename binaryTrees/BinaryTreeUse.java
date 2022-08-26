@@ -340,43 +340,34 @@ public class BinaryTreeUse {
 
     public static void nodesAtDistanceK(BinaryTreeNode<Integer> root, int node, int k) {
         //Your code goes here
-        nodesAtDistanceKHelper(root,node,k);
+        nodesAtDistanceKHelper(root, node, k);
     }
 
-    private static int nodesAtDistanceKHelper(BinaryTreeNode<Integer> root, int node, int k)
-    {
+    private static int nodesAtDistanceKHelper(BinaryTreeNode<Integer> root, int node, int k) {
         //If tree is empty return -1
-        if (root==null)
+        if (root == null)
             return -1;
 
-        if (root.data==node){
+        if (root.data == node) {
             nodesAtDistanceKDown(root, k);
             return 0;
         }
 
-        int leftSubTreeDist = nodesAtDistanceKHelper(root.left,node,k);
-        if (leftSubTreeDist != -1)
-        {
-            if(leftSubTreeDist +1 == k)
-            {
+        int leftSubTreeDist = nodesAtDistanceKHelper(root.left, node, k);
+        if (leftSubTreeDist != -1) {
+            if (leftSubTreeDist + 1 == k) {
                 System.out.println(root.data);
-            }
-            else
-            {
+            } else {
                 nodesAtDistanceKDown(root.right, k - leftSubTreeDist - 2);
             }
             return leftSubTreeDist + 1;
         }
 
-       int rightSubTreeDist = nodesAtDistanceKHelper(root.right, node, k);
-        if (rightSubTreeDist != -1)
-        {
-            if(rightSubTreeDist + 1 == k)
-            {
+        int rightSubTreeDist = nodesAtDistanceKHelper(root.right, node, k);
+        if (rightSubTreeDist != -1) {
+            if (rightSubTreeDist + 1 == k) {
                 System.out.println(root.data);
-            }
-            else
-            {
+            } else {
 
                 nodesAtDistanceKDown(root.left, k - rightSubTreeDist - 2);
             }
@@ -385,19 +376,17 @@ public class BinaryTreeUse {
         return -1;
     }
 
-    private static void nodesAtDistanceKDown(BinaryTreeNode<Integer> root, int k)
-    {
-        if (root==null || k<0)
+    private static void nodesAtDistanceKDown(BinaryTreeNode<Integer> root, int k) {
+        if (root == null || k < 0)
             return;
 
-        if (k == 0)
-        {
+        if (k == 0) {
             System.out.println(root.data);
             return;
         }
 
-        nodesAtDistanceKDown(root.left,k-1);
-        nodesAtDistanceKDown(root.right,k-1);
+        nodesAtDistanceKDown(root.left, k - 1);
+        nodesAtDistanceKDown(root.right, k - 1);
     }
 
 
@@ -694,15 +683,15 @@ public class BinaryTreeUse {
         if (root == null) {
             return 0;
         }
-        int rootData=root.data;
+        int rootData = root.data;
 
-        int rightSum = replaceWithLargerNodesSum(root.right,sum);
+        int rightSum = replaceWithLargerNodesSum(root.right, sum);
 
-        root.data = root.data+rightSum+sum;
+        root.data = root.data + rightSum + sum;
 
-        int leftSum = replaceWithLargerNodesSum(root.left,root.data);
+        int leftSum = replaceWithLargerNodesSum(root.left, root.data);
 
-        return rootData+rightSum+leftSum;
+        return rootData + rightSum + leftSum;
 
     }
 
@@ -710,52 +699,52 @@ public class BinaryTreeUse {
         replaceWithLargerNodesSum(root, 0);
     }
 
-    public static ArrayList<Integer> nodeToRootPathArray(BinaryTreeNode<Integer> root, int x){
-        if(root == null){
+    public static ArrayList<Integer> nodeToRootPathArray(BinaryTreeNode<Integer> root, int x) {
+        if (root == null) {
             return null;
         }
-        if(root.data == x) {
+        if (root.data == x) {
             ArrayList<Integer> output = new ArrayList<>();
             output.add(root.data);
             return output;
         }
 
         ArrayList<Integer> leftOutput = nodeToRootPathArray(root.left, x);
-        if(leftOutput != null){
+        if (leftOutput != null) {
             leftOutput.add(root.data);
             return leftOutput;
         }
 
         ArrayList<Integer> rightOutput = nodeToRootPathArray(root.right, x);
-        if(rightOutput != null){
+        if (rightOutput != null) {
             rightOutput.add(root.data);
             return rightOutput;
         }
         return null;
     }
 
-    public static ArrayList<Integer> getPathInBST(BinaryTreeNode<Integer> root, int data){
-        if(root == null){
+    public static ArrayList<Integer> getPathInBST(BinaryTreeNode<Integer> root, int data) {
+        if (root == null) {
             return null;
         }
 
-        if(root.data == data){
+        if (root.data == data) {
             ArrayList<Integer> output = new ArrayList<Integer>();
             output.add(root.data);
             return output;
         }
 
-        if(data < root.data){
+        if (data < root.data) {
             ArrayList<Integer> leftOutput = getPathInBST(root.left, data);
-            if(leftOutput != null){
+            if (leftOutput != null) {
                 leftOutput.add(root.data);
                 return leftOutput;
             }
         }
 
-        if(data > root.data){
+        if (data > root.data) {
             ArrayList<Integer> rightOutput = getPathInBST(root.right, data);
-            if(rightOutput != null){
+            if (rightOutput != null) {
                 rightOutput.add(root.data);
                 return rightOutput;
             }
@@ -763,7 +752,7 @@ public class BinaryTreeUse {
         return null;
     }
 
-    public static ArrayList<LinkedListNode<Integer>> constructLinkedListForEachLevel(BinaryTreeNode<Integer> root){
+    public static ArrayList<LinkedListNode<Integer>> constructLinkedListForEachLevel(BinaryTreeNode<Integer> root) {
         if (root == null)
             return null;
         Queue<BinaryTreeNode<Integer>> q1 = new LinkedList<BinaryTreeNode<Integer>>();
@@ -783,7 +772,7 @@ public class BinaryTreeUse {
             if (front.right != null)
                 q2.add(front.right);
 
-            while(!q1.isEmpty()){
+            while (!q1.isEmpty()) {
                 BinaryTreeNode<Integer> nextNode = q1.remove();
 
                 if (nextNode.left != null)
@@ -806,12 +795,15 @@ public class BinaryTreeUse {
     }
 
     private static void print(LinkedListNode<Integer> temp) {
-        while(temp != null){
-            System.out.print(temp.data + " ") ;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
             temp = temp.next;
         }
         System.out.println();
     }
+
+
+
 
     public static void main(String args[]) {
 //        BinaryTreeNode<Integer> root = new BinaryTreeNode<>(1);
