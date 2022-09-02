@@ -1,8 +1,10 @@
 package binaryTrees;
 
+import com.sun.source.tree.Tree;
 import queue.QueueEmptyException;
 import queue.QueueUsingLL;
 
+import java.net.Inet4Address;
 import java.util.*;
 
 public class TreeTest {
@@ -221,6 +223,27 @@ public class TreeTest {
         }
     }
 
+    public static TreeNode<Integer> findNextLargestNode(TreeNode<Integer> root, int n){
+        if(root == null){
+            return null;
+        }
+
+        TreeNode<Integer> nextLargest = null;
+        if(root.data > n){
+            nextLargest = root;
+        }
+
+        for(TreeNode<Integer> child : root.children){
+            TreeNode<Integer> nextLargestInChild = findNextLargestNode(child, n);
+            if(nextLargestInChild != null){
+                if(nextLargest == null || nextLargest.data > nextLargestInChild.data){
+                    nextLargest = nextLargestInChild;
+                }
+            }
+        }
+        return nextLargest;
+    }
+
     public static void printTreeBetter(TreeNode<Integer> root){
         if(root == null){
             return;
@@ -288,8 +311,12 @@ public class TreeTest {
 //        System.out.println(ans.data);
 //        TreeNode<Integer> root1 = takeInputLevelWise();
 //        System.out.println(checkIdentical(root, root1));
-        replaceWithDepthValue(root);
-        printLevelWise(root);
+//        replaceWithDepthValue(root);
+//        printLevelWise(root);
+        TreeNode<Integer> node = findNextLargestNode(root, 10);
+        if (node != null) {
+            System.out.println(node.data);
+        }
     }
 
 }
