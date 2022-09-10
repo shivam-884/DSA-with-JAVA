@@ -167,16 +167,22 @@ public class BinaryTreeUse {
         printAtDepthK(root.right, k - 1);
     }
 
-    public static void changeToDepthTree(BinaryTreeNode<Integer> root) {
-        //Your code goes here
-        if (root == null) {
+
+    public static void changeToDepthTree1(BinaryTreeNode<Integer> root, int level){
+        if(root == null){
             return;
         }
-        changeToDepthTree(root.left);
-        changeToDepthTree(root.right);
+        root.data = level;
+
+        changeToDepthTree1(root.left, level + 1);
+        changeToDepthTree1(root.right, level + 1);
 
     }
 
+    public static void changeToDepthTree(BinaryTreeNode<Integer> root) {
+        //Your code goes here
+        changeToDepthTree1(root,0);
+    }
     public static BinaryTreeNode<Integer> removeLeaves(BinaryTreeNode<Integer> root) {
         if (root == null) {
             return root;
@@ -802,7 +808,43 @@ public class BinaryTreeUse {
         System.out.println();
     }
 
+    public static int levelFind(BinaryTreeNode<Integer> root, int data, int level){
+        if(root == null){
+            return 0;
+        }
 
+        if(root.data == data){
+            return level;
+        }
+        int ansLevel = levelFind(root.left, data, level+1);
+        if(ansLevel != 0){
+            return level;
+        }
+        return levelFind(root.right, data, level + 1);
+    }
+
+     public static int getLevel(BinaryTreeNode<Integer> node, int data)
+    {
+        return getLevelUtil(node, data, 1);
+    }
+
+   public static int getLevelUtil(BinaryTreeNode<Integer> node, int data, int level)
+    {
+        if (node == null)
+            return 0;
+
+        if (node.data == data)
+            return level;
+
+        int downlevel
+                = getLevelUtil(node.left, data, level + 1);
+        if (downlevel != 0)
+            return downlevel;
+
+        downlevel
+                = getLevelUtil(node.right, data, level + 1);
+        return downlevel;
+    }
 
 
     public static void main(String args[]) {
@@ -841,12 +883,12 @@ public class BinaryTreeUse {
 //        System.out.println("diameter : " + diameter(root).diameter );
 
 
-        BinaryTreeNode<Integer> root = takeInputLevelWise();
-        printTreeDetailed(root);
-
-        int in[] = {1,2,3,4,5,6,7};
-        int pre[] = {4,2,1,3,6,5,7};
-        int post[] = {4, 5, 2, 6, 7, 3, 1};
+//        BinaryTreeNode<Integer> root = takeInputLevelWise();
+//        printTreeDetailed(root);
+//
+//        int in[] = {1,2,3,4,5,6,7};
+//        int pre[] = {4,2,1,3,6,5,7};
+//        int post[] = {4, 5, 2, 6, 7, 3, 1};
 
 //        BinaryTreeNode<Integer> root = buildTreeFromPreIn(pre,in);
 //        BinaryTreeNode<Integer> root = buildTree(in, post);
@@ -864,9 +906,9 @@ public class BinaryTreeUse {
 //        nodesAtDistanceK(root, 5, 2);
 
 //        System.out.println(ans.min + " " + ans.max +" " + ans.isBST);
-//        int[] arr = {1,2,3,4,5,6,7};
-//        BinaryTreeNode<Integer> root = SortedArrayToBST(arr, 7);
-//        printTreeDetailed(root);
+        int[] arr = {-10,-3,0,5,9};
+        BinaryTreeNode<Integer> root = SortedArrayToBST(arr, 5);
+        printTreeDetailed(root);
 //        LinkedListNode<Integer> head = constructLinkedList(root);
 //        while (head != null){
 //            System.out.print(head.data + " ");
@@ -891,6 +933,7 @@ public class BinaryTreeUse {
 //
 //            }
 //        }
+//        System.out.println(getLevel(root, 3));
 
     }
 }
