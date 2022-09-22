@@ -2,6 +2,7 @@ package priorityQueue;
 
 import java.util.ArrayList;
 
+                          /* ####################     MIN HEAP     #####################*/
 public class Priority_Queue<T> {
     private ArrayList<Element<T>> heap;
 
