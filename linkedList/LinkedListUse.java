@@ -193,7 +193,7 @@ public class LinkedListUse {
     public static Node<Integer> removeDuplicates(Node<Integer> head) {
         //Your code goes here
 
-        Node<Integer> temp = head;
+        /*Node<Integer> temp = head;
         Node<Integer> temp1 = head;
 
         if(temp == null){
@@ -209,8 +209,21 @@ public class LinkedListUse {
                 }
             }
             temp1.next = null;
+            return head;*/
+
+        Node<Integer> currHead = head;
+        if(head == null || head.next == null){
             return head;
         }
+
+        while(currHead.next != null){
+            if(currHead.data != currHead.next.data){
+                currHead = currHead.next.next;
+            }else{
+                currHead = currHead.next;
+            }
+        }
+        return head;
 
     }
 

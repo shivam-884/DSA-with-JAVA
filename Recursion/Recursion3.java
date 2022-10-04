@@ -199,17 +199,88 @@ public class Recursion3 {
         return subsetsHelper(input,0);
     }
 
-//    private static String[] permutationStringHelper(String input, int n){
-//        if(input.length() == n){
-//            String[] output = new String[1];
-//            return output;
-//        }
-//        String[] smallOutput = permutationStringHelper(input,n+1);
-//
-//
-//    }
-//    public static String[] permutationOfString(String input){
-//
-//    }
+    public static String[] permutationOfString(String input){
+        if(input.length() == 0){
+            String output[] = {""};
+            return output;
+        }
+        String[] smallerOutput = permutationOfString(input.substring(1));
+        String output[] = new String[input.length()*smallerOutput.length];
+
+        int index = 0;
+        for(int i=0; i<smallerOutput.length; i++){
+            String currentString = smallerOutput[i];
+            for(int j=0; j<=currentString.length(); j++){
+                output[index] = currentString.substring(0,j) + input.charAt(0)+ currentString.substring(j);
+                index++;
+            }
+        }
+        return output;
+    }
+
+    public static void printSubsetsHelper(int[] input,int beginIndex, int[] output){
+        if(beginIndex == input.length){
+            for(int i : output){
+                System.out.print(i + " ");
+            }
+            System.out.println();
+            return;
+        }
+        int[] newOutput = new int[output.length+1];
+        int i=0;
+        for(; i<output.length; i++){
+            newOutput[i] = output[i];
+        }
+        newOutput[i] = input[beginIndex];
+
+        printSubsetsHelper(input, beginIndex+1, output);
+        printSubsetsHelper(input, beginIndex+1, newOutput);
+    }
+
+    public static void printSubsets(int input[]){
+        int[] output = new int[0];
+        printSubsetsHelper(input,0,output);
+    }
+
+    public static void printSubsetsSumToKHelper(int[] input,int beginIndex, int[] output, int k){
+        if(beginIndex == input.length){
+            if(k==0){
+                for(int i : output){
+                    System.out.print(i+" ");
+                }
+                System.out.println();
+                return;
+            }else{
+                return;
+            }
+        }
+        int[] newOutput = new int[output.length+1];
+        int i = 0;
+        for(; i<output.length; i++){
+            newOutput[i] = output[i];
+        }
+        newOutput[i] = input[beginIndex];
+        printSubsetsSumToKHelper(input,beginIndex+1,output,k);
+        printSubsetsSumToKHelper(input,beginIndex+1,newOutput,k-input[beginIndex]);
+    }
+
+    public static void printSubsetsSumToK(int[] input, int k){
+        int[] output = new int[0];
+        printSubsetsSumToKHelper(input,0, output, k);
+    }
+
+    public static void printPermutationsHelper(String input, String output){
+        if(input.length() == 0){
+            System.out.println(output);
+            return;
+        }
+        for(int i=0; i<input.length(); i++){
+            printPermutationsHelper((input.substring(0,i)+input.substring(i+1)), output+input.charAt(i));
+        }
+    }
+
+    public static void printPermutations(String input){
+        printPermutationsHelper(input,"");
+    }
 
 }
