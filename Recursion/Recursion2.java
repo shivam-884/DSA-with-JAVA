@@ -391,7 +391,7 @@ if(count == 0){
 //        for(int i=0; i<a.length; i++){
 //            System.out.print(a[i] + " ");}
 
-       // towerOfHanoi(3,'a', 'b', 'c');
+//        towerOfHanoi(4,'a', 'b', 'c');
 //        System.out.println(findGeometricSum(10));
 //        System.out.println(isStringPalindrome("abba"));
 //        System.out.println(convertStringToInt("000120034000"));
